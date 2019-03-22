@@ -4,6 +4,7 @@ from .exceptions import SecretMissingError
 from .exceptions import CastError
 from .exceptions import CastHandlerMissingError
 from .secret_sources import FileSecretSource
+from .secret_sources import DirectorySecretSource
 from .secret_sources import EnvironmentVariableSecretSource
 from .preprocessors import base64preprocessor
 from .preprocessors import base32preprocessor
@@ -17,6 +18,7 @@ __all__ = [
     'CastError',
     'CastHandlerMissingError',
 
+    'DirectorySecretSource',
     'FileSecretSource',
     'EnvironmentVariableSecretSource',
 

@@ -2,7 +2,7 @@ from setuptools import find_packages
 from setuptools import setup
 
 NAME = 'top_secret'
-VERSION = '0.1.0'
+VERSION = '0.2.0'
 SUMMARY = 'Small python library for getting secret from various places like environment variables or files.'
 
 setup(
@@ -14,6 +14,7 @@ setup(
     author_email='jedr.ros@gmail.com',
     license='MIT',
     test_suite='tests',
+    install_requires=['PyYAML==5.1'],
     classifiers=[
         'Development Status :: 4 - Beta',
         'Intended Audience :: Developers',

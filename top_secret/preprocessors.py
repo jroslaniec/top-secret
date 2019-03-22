@@ -13,8 +13,12 @@ def base32preprocessor(value):
     return base64.b32decode(value).decode()
 
 
-def typed_preprocessor(value):
-    type, value = value.split(':', 1)
+def typed_preprocessor(value) -> 'str':
+    tpl = value.split(':', 1)
+    if len(tpl) == 1:
+        return tpl[0]
+
+    type, value = tpl
 
     handler = {
         'i': int,

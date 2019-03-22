@@ -5,6 +5,10 @@ class SecretSourceMissing(Exception):
         super(SecretSourceMissing, self).__init__(msg, *args)
 
 
+class TopSecretError(Exception):
+    pass
+
+
 class CastHandlerMissingError(Exception):
     pass
 

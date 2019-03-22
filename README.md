@@ -7,7 +7,7 @@ Small python library for getting secret from various places like environment var
 # Installation
 
 ```bash
-pip install git+https://github.com/jroslaniec/top-secret@0.1.0#egg=top_secret
+pip install git+https://github.com/jroslaniec/top-secret@0.2.0#egg=top_secret
 ```
 
 # Motivation
@@ -70,9 +70,9 @@ echo "json:{\"hello\": \"world\"}" > hello.txt
 ```python
 # python
 
-from top_secret import vault, FileSecretSource, typed_preprocessor
+from top_secret import vault, DirectorySecretSource, typed_preprocessor
 
-vault.add_secret_source(FileSecretSource('/tmp', postfix='txt'))
+vault.add_secret_source(DirectorySecretSource('/tmp', postfix='txt'))
 vault.add_preprocessor(typed_preprocessor)
 
 assert vault.get('magic_number') == 10
