@@ -6,9 +6,11 @@ verify_ssl = true
 [dev-packages]
 pytest = "*"
 pytest-mock = "*"
+ipython = "*"
 
 [packages]
 pyyaml = "==5.1"
+boto3 = "*"
 
 [requires]
 python_version = "3.6"

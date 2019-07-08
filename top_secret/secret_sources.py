@@ -1,7 +1,7 @@
 import abc
 import json
 import os
-from typing import Optional, List
+from typing import Optional, List, Dict
 
 import yaml
 
@@ -136,3 +136,57 @@ class DirectorySecretSource(BaseSecretSource):
             secret = secret.strip()
 
         return secret
+
+
+class S3FileFileSource(BaseSecretSource):
+    loaded: bool
+    contents: List[Dict]
+    bucket_name: str
+    file_names: List[str]
+
+    def __init__(self, bucket_name: str, file_names: List[str], lazy=True):
+        self.loaded = False
+        self.contents = []
+        self.bucket_name = bucket_name
+        self.file_names = file_names
+
+        if not lazy:
+            self._load_configs()
+
+    def get(self, name):
+        if not self.loaded:
+            self._load_configs()
+
+        value = None
+
+        for c in self.contents:
+            value = c.get(name)
+            if value is not None:
+                break
+
+        if value is None:
+            raise SecretMissingError(f"Cannot get secret {name!r}.")
+
+        return value
+
+    def _load_configs(self):
+        import boto3
+
+        s3 = boto3.resource("s3")
+        bucket = s3.Bucket(self.bucket_name)
+
+        for f in self.file_names:
+            body = (
+                bucket.objects.filter(Prefix=f)
+                .__iter__()
+                .__next__()
+                .get()["Body"]
+                .read()
+            )
+            c = self._parse_yaml(body)
+            self.contents.append(c)
+
+        self.loaded = True
+
+    def _parse_yaml(self, body: bytes) -> Dict:
+        return yaml.safe_load(body)
