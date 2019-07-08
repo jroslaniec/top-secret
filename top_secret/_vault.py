@@ -12,20 +12,16 @@ class NoDefault:
     pass
 
 
-DEFAULT_SECRET_SOURCES = [
-    EnvironmentVariableSecretSource()
-]
+DEFAULT_SECRET_SOURCES = [EnvironmentVariableSecretSource()]
 
-DEFAULT_CAST_HANDLERS = {
-    bool: bool_cast_handler,
-}
+DEFAULT_CAST_HANDLERS = {bool: bool_cast_handler}
 
 
 class Vault:
     _cache = {}
-    cast_handlers: 'Dict[Callable]' = {}
-    secret_sources: 'List[BaseSecretSource]' = []
-    preprocessors: 'List[Callable[str, str]]' = []
+    cast_handlers: "Dict[Callable]" = {}
+    secret_sources: "List[BaseSecretSource]" = []
+    preprocessors: "List[Callable[str, str]]" = []
 
     def __init__(self, secret_sources=None, cast_handlers=None, preprocessors=None):
         if cast_handlers is None:
@@ -41,7 +37,7 @@ class Vault:
 
         self.reset()
 
-    def add_secret_source(self, source: 'BaseSecretSource'):
+    def add_secret_source(self, source: "BaseSecretSource"):
         if source in self.secret_sources:
             return
         self.secret_sources.append(source)
@@ -80,15 +76,15 @@ class Vault:
         self.clear_cache()
 
     def get(
-            self,
-            name,
-            default=NoDefault,
-            *,
-            source=None,
-            preprocessors=None,
-            cast_to=None,
-            no_cache=False,
-            cache_result=True
+        self,
+        name,
+        default=NoDefault,
+        *,
+        source=None,
+        preprocessors=None,
+        cast_to=None,
+        no_cache=False,
+        cache_result=True,
     ):
         if no_cache is False and name in self._cache:
             return self._cache[name]
@@ -142,7 +138,7 @@ class Vault:
 
             if not callable(handler):
                 raise CastHandlerMissingError(
-                    f'Cast handler: {handler!r}, is not registered.'
+                    f"Cast handler: {handler!r}, is not registered."
                 )
 
             value = handler(value)

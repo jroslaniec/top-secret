@@ -11,18 +11,15 @@ from .preprocessors import base32preprocessor
 from .preprocessors import typed_preprocessor
 
 __all__ = [
-    'Vault',
-    'vault',
-
-    'SecretMissingError',
-    'CastError',
-    'CastHandlerMissingError',
-
-    'DirectorySecretSource',
-    'FileSecretSource',
-    'EnvironmentVariableSecretSource',
-
-    'base64preprocessor',
-    'base32preprocessor',
-    'typed_preprocessor',
+    "Vault",
+    "vault",
+    "SecretMissingError",
+    "CastError",
+    "CastHandlerMissingError",
+    "DirectorySecretSource",
+    "FileSecretSource",
+    "EnvironmentVariableSecretSource",
+    "base64preprocessor",
+    "base32preprocessor",
+    "typed_preprocessor",
 ]

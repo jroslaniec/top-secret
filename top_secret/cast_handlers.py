@@ -6,9 +6,9 @@ def bool_cast_handler(value):
         return value
 
     value = value.lower()
-    if value in ('true', 'yes', '1'):
+    if value in ("true", "yes", "1"):
         return True
-    if value in ('false', 'no', '0'):
+    if value in ("false", "no", "0"):
         return False
 
     raise CastError

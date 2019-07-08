@@ -10,38 +10,37 @@ from .exceptions import TopSecretError
 
 
 class BaseSecretSource(metaclass=abc.ABCMeta):
-
     @abc.abstractmethod
     def get(self, name):
         pass
 
 
 class EnvironmentVariableSecretSource(BaseSecretSource):
+    def __init__(self, allowed_prefixes: "Optional[List[str]]" = None):
+        self.allowed_prefixes = allowed_prefixes or [""]
 
-    def __init__(self, allowed_prefixes: 'Optional[List[str]]' = None):
-        self.allowed_prefixes = allowed_prefixes or ['']
-
-    def get(self, name: 'str') -> 'str':
+    def get(self, name: "str") -> "str":
         value = None
 
         for prefix in self.allowed_prefixes:
-            value = os.environ.get(f'{prefix}{name}')
+            value = os.environ.get(f"{prefix}{name}")
             if value is not None:
                 break
 
         if value is None:
             raise SecretMissingError(
-                f'Cannot get secret {name!r}. '
-                f'Environment variable {name!r} is not set.'
+                f"Cannot get secret {name!r}. "
+                f"Environment variable {name!r} is not set."
             )
         return value
 
 
-DEFAULT_SECRET_FILES = frozenset(['settings.json', '.secrets.json', 'settings.yaml', '.secrets.yaml'])
+DEFAULT_SECRET_FILES = frozenset(
+    ["settings.json", ".secrets.json", "settings.yaml", ".secrets.yaml"]
+)
 
 
 class FileSecretSource(BaseSecretSource):
-
     def __init__(self, files=DEFAULT_SECRET_FILES, require_files_exists=False):
         self.contents = []
         self.require_files_exists = require_files_exists
@@ -60,7 +59,7 @@ class FileSecretSource(BaseSecretSource):
                 break
 
         if value is None:
-            raise SecretMissingError(f'Cannot get secret {name!r}.')
+            raise SecretMissingError(f"Cannot get secret {name!r}.")
 
         return value
 
@@ -69,22 +68,22 @@ class FileSecretSource(BaseSecretSource):
 
         file_exists = os.path.exists(file_path)
         if not file_exists and self.require_files_exists:
-            raise TopSecretError(f'File {file_path} doesn\'t exist.')
+            raise TopSecretError(f"File {file_path} doesn't exist.")
 
         if not file_exists:
             return None
 
         if not os.path.isfile(file_path):
-            raise TopSecretError(f'{file_path} is not a file.')
+            raise TopSecretError(f"{file_path} is not a file.")
 
-        ext = file_path.split('.')[-1]
+        ext = file_path.split(".")[-1]
 
-        if ext == 'json':
+        if ext == "json":
             return self._parse_json(file_path)
-        if ext in ('yaml', 'yml'):
+        if ext in ("yaml", "yml"):
             return self._parse_yaml(file_path)
 
-        raise TopSecretError(f'File {file_path} is not in a supported format.')
+        raise TopSecretError(f"File {file_path} is not in a supported format.")
 
     def _get_file_path(self, filename):
         if os.path.isabs(filename):
@@ -101,7 +100,6 @@ class FileSecretSource(BaseSecretSource):
 
 
 class DirectorySecretSource(BaseSecretSource):
-
     def __init__(self, base_path, postfix=None, stripe_whitespaces=True):
         self.base_path = base_path
         self.postfix = postfix
@@ -115,7 +113,7 @@ class DirectorySecretSource(BaseSecretSource):
 
     def build_path(self, name):
         if self.postfix:
-            name = '{}.{}'.format(name, self.postfix.lstrip('.'))
+            name = "{}.{}".format(name, self.postfix.lstrip("."))
 
         if os.path.isabs(name):
             return name
@@ -124,8 +122,7 @@ class DirectorySecretSource(BaseSecretSource):
     def raise_on_no_file(self, path, name):
         if not os.path.exists(path):
             raise SecretMissingError(
-                f'Cannot get secret {name!r}. '
-                f'File {path} doesn\'t exist.'
+                f"Cannot get secret {name!r}. " f"File {path} doesn't exist."
             )
 
     def read_secret(self, path, stripe_whitespaces):

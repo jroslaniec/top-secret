@@ -13,7 +13,7 @@ pip install git+https://github.com/jroslaniec/top-secret@0.2.0#egg=top_secret
 # Motivation
 
 More times than not you need some secrets in your application.
-There are many ways to store then and in each case, there is different retrieval method. 
+There are many ways to store then and in each case, there is different retrieval method.
 For example, you may store your secrets in environment variables or files or even get them from some HTTP server.
 Even if you store all your secrets in environment variables the problem with encoding or type may arise.
 Let's say you store your database password in base64.
@@ -85,4 +85,3 @@ Remember to install dev requirements and simply run:
 ```bash
 pytest
 ```
-
