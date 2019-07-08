@@ -12,7 +12,8 @@ ENV_VAL_TEST_PREFIX = '_TEST_TOP_SECRET'
 ENV_VAL_1 = f'{ENV_VAL_TEST_PREFIX}_TEST'
 
 
-def setup_function(fn):
+@pytest.fixture(autouse=True)
+def setup_function():
     keys_to_remove = [key for key in os.environ.keys()
                       if key.startswith(ENV_VAL_TEST_PREFIX)]
 
